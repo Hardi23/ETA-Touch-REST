@@ -2,10 +2,13 @@ import codecs
 import sys
 
 from EtaTouch import EtaTouch
+from MenuModel import MenuItem
 
 
 def print_current_menu(menu):
+    print("====== Available items ======")
     print("\n".join(menu.sub_menus.keys()))
+    print()
 
 
 def print_html(eta):
@@ -28,23 +31,32 @@ if __name__ == '__main__':
     if len(args) == 3:
         ip = args[1]
         port = args[2]
+    print(f"Starting with {ip} on port {port}")
     etaTouch = EtaTouch(ip, port)
     etaTouch.load_modules()
+    print("Modules loaded.")
+    print("Loading current values...")
     etaTouch.load_values()
-    # print_current_menu(main_menu)
+
     val = ""
     cur_menu = etaTouch.menu
-    while val != "exit":
+    print("Values loaded.\n")
+    print_current_menu(cur_menu)
+    while True:
         val = input("Enter menu item: ")
+        if val == "exit":
+            break
         if val == "val":
             cur_menu.print_values()
         elif val == "back":
-            cur_menu = cur_menu.parent
+            if isinstance(cur_menu, MenuItem):
+                cur_menu = cur_menu.parent
+            print_current_menu(cur_menu)
         elif val == "getEP":
             ep_val = input("Enter Endpoint location")
             ep = etaTouch.menu.sensor_addresses.get(ep_val)
             if ep is None:
-                print("Enpoint not found")
+                print("Endpoint not found")
             else:
                 ep.print_values()
         elif val == "listEP":
@@ -57,4 +69,4 @@ if __name__ == '__main__':
                 print("Menu not found reset!")
             else:
                 cur_menu = new_men
-        print_current_menu(cur_menu)
+            print_current_menu(cur_menu)
