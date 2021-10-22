@@ -1,9 +1,6 @@
 # ETA-Rest-API
 Access and control your ETA Touch device over the network
 
-This project is going to be the base for a Home-Assistant-Integration,
-for which I will start the project soon.
-
 ## Usage
 - Simply supply your local ip of your ETA-Touch-Device and use the interactive menu to read data coming from the sensors
 - val : Print the values of the currently accessed Sensor
